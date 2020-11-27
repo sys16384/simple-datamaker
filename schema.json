@@ -1,0 +1,84 @@
+{
+	"$id": "schema.json",
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"description": "DataMaker的配置文件",
+	"type": "object",
+	"properties": {
+		"test_range": {
+			"type": "array",
+			"description": "生成测试点的区间，用闭区间表示",
+			"minItems": 2,
+			"maxItems": 2,
+			"items": [
+				{
+					"type": "integer"
+				},
+				{
+					"type": "integer"
+				}
+			]
+		},
+		"title": {
+			"type": "string",
+			"description": "题目标题，将用于数据点文件的命名"
+		},
+		"path": {
+			"type": "string",
+			"description": "生成的数据文件存放目录，默认为./data\n若要放置于当前目录，请填入'.'"
+		},
+		"std": {
+			"type": "string",
+			"description": "标程文件名"
+		},
+		"std_compile": {
+			"type": "string",
+			"description": "标程的编译命令"
+		},
+		"zip": {
+			"type": "boolean",
+			"description": "是否将产生的文件打包"
+		},
+		"config": {
+			"type": "array",
+			"description": "输入数据格式，每个元素用换行符隔开",
+			"items": {
+				"$ref": "#/data"
+			}
+		}
+	},
+	"required": [
+		"test_range",
+		"config"
+	],
+	"data": {
+		"description": "DataMaker的data子项配置文件",
+		"type": [
+			"integer",
+			"number",
+			"string",
+			"array",
+			"object"
+		],
+		"properties": {
+			"data": {
+				"$ref": "#/data"
+			},
+			"repeat": {
+				"type": "integer",
+				"minimum": 1,
+				"description": "data的重复次数，默认为1"
+			},
+			"distinct": {
+				"type": "boolean",
+				"description": "是否允许生成重复的数据，若值为true则不允许，默认为false"
+			},
+			"sep": {
+				"type": "string",
+				"description": "数据生成的间隔符，默认为' '，若repeat为1则设为data的间隔符\n注意：在最后一次生成数据之后也会插入sep"
+			}
+		},
+		"required": [
+			"data"
+		]
+	}
+}
