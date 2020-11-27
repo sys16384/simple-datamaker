@@ -1,0 +1,27 @@
+{
+	"$schema": "http://49.233.176.49/project_DataMaker/schema.json",
+	"test_range": [1, 10],
+	"title": "",
+	"std": "std",
+	"std_compile": "g++ std.cpp -o std",
+	"path": "./data",
+	"zip": true,
+	"config": [
+		10,
+		["10,20", "20,50,0.001"],
+		{
+			"repeat": 10,
+			"distinct": true,
+			"data": "1,10"
+		},
+		{
+			"repeat": 3,
+			"sep": "\n",
+			"data": {
+				"repeat": 5,
+				"sep": "   ",
+				"data": "ABCD"
+			}
+		}
+	]
+}
