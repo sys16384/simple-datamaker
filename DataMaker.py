@@ -1,5 +1,6 @@
 from random import randint
 import math
+from sys import argv
 import zipfile
 import json
 import os
@@ -15,7 +16,7 @@ def generate(conf, sep=' ') -> str:
         elif len(l) == 3:
             a, b, c = float(l[0]), float(l[1]), float(l[2])
             res = randint(round(a/c), round(b/c))*c
-            d = max(0,math.ceil(-math.log10(c)))
+            d = max(0, math.ceil(-math.log10(c)))
             return ('%.'+str(d)+'f')%res
         else:
             return ''
@@ -54,9 +55,15 @@ def generate(conf, sep=' ') -> str:
 
 
 if __name__ == "__main__":
-    f = open('config.json')
+    confile="config.json"
+    if len(argv)>1:
+        confile=argv[1]
+    if not os.path.exists(confile):
+        exit(confile+' not found')
+    f = open(confile)
     conf = json.load(f)
     f.close()
+    print('loading config file ...\n')
     
     l, r = conf['test_range']
     
@@ -64,21 +71,27 @@ if __name__ == "__main__":
     std = 'std' if ('std' not in conf) else conf['std']
     path = './data' if ('path' not in conf) else conf['path']
     if not os.path.exists(path):
+        print('creating path '+path,'\n')
         os.mkdir(path)
     
     if 'std_compile' in conf:
+        print('compiling std source code ...\n')
         os.system(conf['std_compile'])
     
     for i in range(int(l), int(r)+1):
         file_name = title+str(i)
+        print("generating file",file_name+'.in',"...")
         f = open(path+'/'+file_name+'.in', 'w')
         f.write(generate(conf['config'], '\n'))
         f.close()
+        print("generating file",file_name+'.out',"...")
         os.system(std+' < '+path+'/'+file_name+'.in > '+path+'/'+file_name+'.out')
     
     if ('zip' in conf) and conf['zip']:
+        print("adding files to zip file ...")
         pack=zipfile.ZipFile(title+'.zip','a')
         for i in range(int(l), int(r)+1):
             file_name = title+str(i)
             pack.write(path+'/'+file_name+'.in')
             pack.write(path+'/'+file_name+'.out')
+    os.system("pause")

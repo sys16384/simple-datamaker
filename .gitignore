@@ -1,2 +1,8 @@
 
 *.zip
+*.exe
+DataMaker.spec
+build/
+__pycache__/
+dist/
+data/
