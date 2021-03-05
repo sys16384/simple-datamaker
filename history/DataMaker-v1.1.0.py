@@ -6,7 +6,7 @@ import json
 import os
 
 
-def generate(conf, sep=' ', end='') -> str:
+def generate(conf, sep=' ') -> str:
     if isinstance(conf, str):
         l = conf.split(',')
         if len(l) == 1:
@@ -25,19 +25,17 @@ def generate(conf, sep=' ', end='') -> str:
         res = ''
         for t in conf:
             res += generate(t)+sep
-        res = res.rstrip(sep)
-        return res+end
+        res = res.rstrip()
+        return res
 
     elif isinstance(conf, dict):
         if 'data' not in conf:
             return ''
         n = 1
         if 'repeat' in conf:
-            n = int(generate(conf['repeat']))
+            n = conf['repeat']
         if 'sep' in conf:
             sep = conf['sep']
-        if 'end' in conf:
-            end = conf['end']
         res = str()
         t = set()
         sep2 = ' '
@@ -50,8 +48,7 @@ def generate(conf, sep=' ', end='') -> str:
                     tmp=generate(conf['data'], sep2)
                 t.add(tmp)
             res += tmp+sep
-        res = res.rstrip(sep)
-        return res+end
+        return res
 
     else:
         return str(conf)

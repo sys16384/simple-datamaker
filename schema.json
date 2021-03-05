@@ -64,8 +64,7 @@
 				"$ref": "#/data"
 			},
 			"repeat": {
-				"type": "integer",
-				"minimum": 1,
+				"type": ["integer", "string"],
 				"description": "data的重复次数，默认为1"
 			},
 			"distinct": {
@@ -74,7 +73,11 @@
 			},
 			"sep": {
 				"type": "string",
-				"description": "数据生成的间隔符，默认为' '，若repeat为1则设为data的间隔符\n注意：在最后一次生成数据之后也会插入sep"
+				"description": "数据生成的间隔符，默认为' '，若repeat为1则设为data的间隔符\n"
+			},
+			"end": {
+				"type": "string",
+				"description": "数据生成的结束符，默认为' '，若repeat为1则设为data的结束符\n"
 			}
 		},
 		"required": [
